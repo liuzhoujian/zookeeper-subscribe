@@ -60,11 +60,11 @@ public class ManageServer {
      * @param cmdType
      */
     private void exeCmd(String cmdType) {
-        if(COMMAND.LIST.name().equals(cmdType)) {
+        if(COMMAND.LIST.cmdType.equals(cmdType)) {
             execList();
-        } else if(COMMAND.CREATE.name().equals(cmdType)) {
+        } else if(COMMAND.CREATE.cmdType.equals(cmdType)) {
             execCreate();
-        } else if(COMMAND.MODIFY.name().equals(cmdType)) {
+        } else if(COMMAND.MODIFY.cmdType.equals(cmdType)) {
             execModify();
         } else {
             System.out.println("error command:" + cmdType);
@@ -80,7 +80,7 @@ public class ManageServer {
         if(!zkClient.exists(configPath)) {
             //先创建config节点
             try {
-                zkClient.createPersistent(configPath, JSON.toJSONString(serverConfig).getBytes());
+                zkClient.createPersistent(configPath, JSON.toJSONString(serverConfig).getBytes()); //将对象转为二进制数值保存在节点中
             } catch (ZkNodeExistsException e) {
                 zkClient.writeData(configPath, JSON.toJSONString(serverConfig).getBytes());
             } catch (ZkNoNodeException e) {
@@ -128,4 +128,5 @@ public class ManageServer {
             this.cmdType = cmdType;
         }
     }
+
 }
